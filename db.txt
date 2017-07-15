@@ -1,0 +1,5 @@
+Table name: User
+Column: id,email,pass, username
+
+Table name: New product
+Column: id, product title, product image, price, categories, desc, available, number of prodects
