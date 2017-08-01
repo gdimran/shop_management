@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------
 [Master Stylesheet]
 
-Project:    Glade Admin Template
+Project:    
 Version:    1.0
 Last change:    09/06/2016 [Initail Release]
 -------------------------------------------------------------------*/
@@ -24411,4 +24411,8 @@ transform: scale(1);
 }
 .hover-user li a {
     color:#fff;
+}
+.form-group .btn.green-bg.btn-lg {
+    width: 100%;
+    margin-top: 20px;
 }

@@ -23,11 +23,16 @@ class Register {
     public $employee_roll = ' ';
     public $gender = ' ';
 
-   
+    
+    public $link;
+	public $error;
 
     public function __construct() {
          
-        session_start();
+         if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
         $conn = mysql_connect('localhost', 'root', '') or die('Opps unable to connect with database');
         mysql_select_db('shop_management');
         
@@ -74,7 +79,7 @@ class Register {
     
   
    public function store() {
-        $query="INSERT INTO `employees` (`id`,`name`, `email`, `password`, `phone_no`, `address`, `image`,`salary`,`employee_roll`, `gender` ) VALUES (NULL, '$this->name', '$this->email', '$this->password', '$this->phone_no', '$this->address', ' $this->image', ' ', ' ', '$this->gender')";
+        $query="INSERT INTO `employees` (`id`,`name`, `email`, `password`, `phone_no`, `address`, `image`,`salary`,`employee_roll`, `gender` ) VALUES (NULL, '$this->name', '$this->email', '$this->password', '$this->phone_no', '$this->address', ' $this->image', '$this->salary ', '$this->employee_roll ', '$this->gender')";
         
         if(mysql_query($query)){
             $_SESSION['Message']="Registration successfull";
@@ -95,7 +100,73 @@ class Register {
     }
     
     
+    public function show() {
+       
+       $query="SELECT * FROM `employees` WHERE `id` ='".$this->id."'";
+       $singledata=  mysql_query($query);
+       $row=  mysql_fetch_assoc($singledata);
+       return $row;
+    }
     
+    
+ // Update data
+  	/*public function update(){
+            $query = "UPDATE employees
+                SET
+                name  = '$this->name',
+                email = '$this->email',
+                password = '$this->password',
+                phone_no='$this->phone_no',
+                address = '$this->address',
+                image = '$this->image',
+                salary='$this->salary',
+                employee_roll = '$this->employee_roll',
+                gender = '$this->gender'
+
+                WHERE id = '$this->id'";
+	if(mysql_query($query)){
+            $_SESSION['Message']="update successfull";
+        }  else {
+            echo 'conncetion error!';
+        }
+        header('location:employee_list.php');
+  }
+         * 
+         * 
+         */
+    
+    
+        public function emplyoeeUpdate() {
+        $query = "UPDATE employees
+                SET
+                name  = '$this->name',
+                email = '$this->email',
+                password = '$this->password',
+                phone_no='$this->phone_no',
+                address = '$this->address',
+                image = '$this->image',
+                salary='$this->salary',
+                employee_roll = '$this->employee_roll',
+                gender = '$this->gender'
+
+                WHERE id = '$this->id'";
+	if(mysql_query($query)){
+            $_SESSION['Message']="update successfull";
+        }  else {
+            echo 'conncetion error!';
+        }
+        header('location:employee_list.php');
+    }
+    
+    
+    public function delete() {
+        $query="DELETE FROM `employees` WHERE `employees`.`id` ='".$this->id."'";
+        
+       if(mysql_query($query)){
+            $_SESSION['Message']="Successfully deleted";
+        }
+        header("location:employee_list.php");
+    }
     
     
     

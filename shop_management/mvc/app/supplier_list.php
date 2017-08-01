@@ -1,21 +1,35 @@
 <?php
 
-session_start();
+    if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
+
 if(!isset( $_SESSION['email']))
 {
-    include 'login.php';
+     header('location:login.php');
+    //include 'login.php';
     die();
 }
 
 ?>
 
-   <?php include_once './include/navigation.php'; ?>
+<?php
+
+include './models/Supplier.php';
+$supplier= new Supplier();
+$userdata= $supplier->prepare($_GET)->viewall();
+
+?>
+
+    <?php include_once './include/navigation.php'; ?>
             <!-- Top Bar -->
 
             <?php include "./include/sidebar.php"; ?>
 
 
         </header>
+
         <div class="slide-panel" id="panel-scroll">
             <ul role="tablist" class="nav nav-tabs panel-tab-btn">
                 <li class="active"><a data-toggle="tab" role="tab" data-target="#panel-tab1"><i class="ti-email"></i><span>Your Emails</span></a></li>
@@ -263,74 +277,68 @@ if(!isset( $_SESSION['email']))
                     <li><a href="javascript:void(0)" title="">Dashboard</a></li>
                 </ul>
                 <div class="main-content-area">
+
+
                     <div class="row">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="widget">
-                                <div class="quick-report-widget">
-                                    <span>New Visits</span>
-                                    <h4>21,069</h4>
-                                    <i class="fa fa-clock-o red-bg"></i>
-                                    <h5>Total Visits : 9,34,001</h5>
-                                </div>
-                            </div>
-                            <!-- Widget -->
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="widget">
-                                <div class="quick-report-widget">
-                                    <span>New Signups</span>
-                                    <h4>1,346</h4>
-                                    <i class="fa fa-user skyblue-bg"></i>
-                                    <h5>Total Users : 22,344</h5>
-                                </div>
-                            </div>
-                            <!-- Widget -->
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="widget">
-                                <div class="quick-report-widget">
-                                    <span>Todays Earning</span>
-                                    <h4>2,345</h4>
-                                    <i class="fa fa-usd green-bg"></i>
-                                    <h5>Total Earning : $345,00</h5>
-                                </div>
-                            </div>
-                            <!-- Widget -->
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="widget">
-                                <div class="quick-report-widget">
-                                    <span>Real Visitors</span>
-                                    <h4 class="number">123</h4>
-                                    <i class="fa fa-area-chart blue-bg"></i>
-                                    <h5>Total Visitors : 235,670</h5>
-                                </div>
-                            </div>
-                            <!-- Widget -->
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="page" id="page">
-                            <?php
-                        if(@$_GET['page'])
-                        {
-                           $url=$_GET['page'].".php"; 
-                           if(is_file($url))
-                           {
-                               include $url;
-                           }
-                           else
-                           {
-                               echo 'required file is not found';
-                           }
-                        }
-                        
-                    ?>
-                        </div>
+                        <div class="col-md-12">
+                            <div class="widget white">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Product Name</th>                                           
+                                            <th>Product Quantity</th>
+                                            <th>Product Price</th>
+                                            
+                                        </tr>
+                                    </thead>
 
 
+                                    <tbody>
+                                        
+                                        <?php
+                                            $serial=1;
 
+                                            foreach ($userdata as $singledata){ ?>
+                                            <tr>
+                                                <td>
+                                                    <?php  echo $serial++ ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['name'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['email'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['phone'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['product_name'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['product_qu'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php  echo $singledata['product_price'] ?>
+                                                </td>
+                                                
 
+                                                <td><a href="single_supplier.php?supplier_id=<?php echo $singledata['supplier_id']; ?>">View</a></td>
+                                                <td><a href="editSupplier.php?supplier_id=<?php echo $singledata['supplier_id']; ?>">Edit</a></td>
+                                                <td><a href="supplier_delete.php?supplier_id=<?php echo $singledata['supplier_id']; ?>">Delete</a></td>
+                                            </tr>
+
+                                            <?php }
+
+?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
 
